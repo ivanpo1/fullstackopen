@@ -1,8 +1,32 @@
-import { useState } from 'react'
+import {useState} from 'react'
 
 
-const Button = ({ onClick, text }) => <button onClick={onClick}>{text}</button>
-const Info = ({ name, amount }) => <p>{name} {amount}</p>
+const Button = ({onClick, text}) => <button onClick={onClick}>{text}</button>
+const StatisticLine = ({name, value}) => <p>{name} {value}</p>
+
+const Statistics = ({good, neutral, bad, allFeedback}) => {
+    const average = allFeedback.length ? allFeedback.reduce((acc, cur) => acc + cur, 0) / allFeedback.length : 0
+    const positive = allFeedback.length && good ? (good / allFeedback.length) * 100 : 0
+
+    if (!good && !neutral && !bad) {
+        return (
+            <div>
+                <p>No feedback given</p>
+            </div>
+        )
+    }
+
+    return (
+        <div>
+            <StatisticLine name='good' value={good}/>
+            <StatisticLine name='neutral' value={neutral}/>
+            <StatisticLine name='bad' value={bad}/>
+            <StatisticLine name='all' value={allFeedback.length}/>
+            <StatisticLine name='average' value={average}/>
+            <StatisticLine name='positive' value={`${positive} %`}/>
+        </div>
+    )
+}
 
 const App = () => {
     // save clicks of each button to its own state
@@ -25,12 +49,6 @@ const App = () => {
 
     }
 
-    const average = allFeedback.length ? allFeedback.reduce((acc, cur) => acc + cur, 0) / allFeedback.length : 0
-
-    console.log(average)
-    console.log('allFeedback: ',allFeedback)
-    const positive = allFeedback.length && good ? (good / allFeedback.length) * 100 : 0
-
     return (
         <div>
             <div>
@@ -43,18 +61,9 @@ const App = () => {
             <div>
                 <h1>statistics</h1>
             </div>
-            <div>
-                <Info name='good' amount={good} />
-                <Info name='neutral' amount={neutral}/>
-                <Info name='bad' amount={bad}/>
-                <Info name='all' amount={allFeedback.length}/>
-                <Info name='average' amount={average}/>
-                <Info name='positive' amount={`${positive} %`}/>
-            </div>
+            <Statistics good={good} bad={bad} neutral={neutral} allFeedback={allFeedback}/>
         </div>
     )
 }
-
-
 
 export default App
