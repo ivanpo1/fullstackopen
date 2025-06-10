@@ -2,7 +2,14 @@ import {useState} from 'react'
 
 
 const Button = ({onClick, text}) => <button onClick={onClick}>{text}</button>
-const StatisticLine = ({name, value}) => <p>{name} {value}</p>
+const StatisticLine = ({name, value}) => {
+    return (
+        <tr>
+            <th>{name}</th>
+            <td>{value}</td>
+        </tr>
+    )
+}
 
 const Statistics = ({good, neutral, bad, allFeedback}) => {
     const average = allFeedback.length ? allFeedback.reduce((acc, cur) => acc + cur, 0) / allFeedback.length : 0
@@ -10,21 +17,21 @@ const Statistics = ({good, neutral, bad, allFeedback}) => {
 
     if (!good && !neutral && !bad) {
         return (
-            <div>
-                <p>No feedback given</p>
-            </div>
+            <p>No feedback given</p>
         )
     }
 
     return (
-        <div>
+        <table>
+            <tbody>
             <StatisticLine name='good' value={good}/>
             <StatisticLine name='neutral' value={neutral}/>
             <StatisticLine name='bad' value={bad}/>
             <StatisticLine name='all' value={allFeedback.length}/>
             <StatisticLine name='average' value={average}/>
             <StatisticLine name='positive' value={`${positive} %`}/>
-        </div>
+            </tbody>
+        </table>
     )
 }
 
@@ -57,11 +64,12 @@ const App = () => {
                 <Button onClick={handleNeutralClick} text='neutral'/>
                 <Button onClick={handleBadClick} text='bad'/>
             </div>
-
             <div>
                 <h1>statistics</h1>
             </div>
-            <Statistics good={good} bad={bad} neutral={neutral} allFeedback={allFeedback}/>
+            <div>
+                <Statistics good={good} bad={bad} neutral={neutral} allFeedback={allFeedback}/>
+            </div>
         </div>
     )
 }
