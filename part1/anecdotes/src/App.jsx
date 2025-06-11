@@ -21,17 +21,42 @@ const App = () => {
     const handleVote = () => {
         setVote(prevVotes => ({...prevVotes, [selected]: (prevVotes[selected] || 0) + 1}))
     }
+    const getMostVoted = () => {
+        const entries = Object.entries(votes)
+        let maxKey = 0
+        let maxValue = 0
+
+        for (const [key, value] of entries) {
+            if (value > maxValue) {
+                maxValue = value
+                maxKey = Number(key)
+            }
+        }
+
+        return maxKey
+    }
 
     console.log('votes', votes)
 
     return (
         <div>
+            <h1>Anecdote of the day</h1>
             <div>
                 {anecdotes[selected]}
             </div>
             <div>
+                has {votes[selected] ? votes[selected] : 0} votes
+            </div>
+            <div>
                 <Button onClick={handleRandomAnecdote} text={'next anecdote'}/>
                 <Button onClick={handleVote} text={'vote'}/>
+            </div>
+            <h2>Anecdote with most votes</h2>
+            <div>
+                {anecdotes[getMostVoted()]}
+            </div>
+            <div>
+                has {votes[getMostVoted()] ? votes[getMostVoted()] : 0} votes
             </div>
         </div>
     )
