@@ -6,6 +6,6 @@ const Persons = ({ persons }) => (
       </li>
     ))}
   </ul>
-)
+);
 
-export default Persons
+export default Persons;
