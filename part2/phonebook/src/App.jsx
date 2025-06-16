@@ -3,6 +3,7 @@ import PersonForm from './components/PersonForm';
 import Filter from './components/Filter';
 import Persons from './components/Person';
 import axios from 'axios';
+import personService from './services/personService';
 
 const App = () => {
   const [persons, setPersons] = useState([]);
@@ -10,14 +11,20 @@ const App = () => {
   const [newNumber, setNewNumber] = useState('');
   const [filterNames, setFilterNames] = useState('');
 
-  const hook = () => {
-    axios.get('http://localhost:3001/persons')
-      .then((response) => {
-        setPersons(response.data)
-      })
-  }
+  // const hook = () => {
+  //   axios.get('http://localhost:3001/persons')
+  //     .then((response) => {
+  //       setPersons(response.data)
+  //     })
+  // }
 
-  useEffect(hook, [])
+  const hook = () => {
+    personService.getAll().then((initialPersons) => {
+      setPersons(initialPersons);
+    });
+  };
+
+  useEffect(hook, []);
 
   const addPerson = (event) => {
     event.preventDefault();
@@ -31,9 +38,11 @@ const App = () => {
       id: persons.length + 1,
     };
 
-    setPersons(persons.concat(personObject));
-    setNewName('');
-    setNewNumber('');
+    personService.create(personObject).then((returnedPerson) => {
+      setPersons(persons.concat(returnedPerson));
+      setNewName('');
+      setNewNumber('');
+    });
   };
 
   const personsToShow = persons.filter((person) =>
