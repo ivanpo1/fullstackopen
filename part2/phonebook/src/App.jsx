@@ -3,12 +3,18 @@ import PersonForm from './components/PersonForm';
 import Filter from './components/Filter';
 import Persons from './components/Person';
 import personService from './services/personService';
+import './index.css';
+import Notification from './components/Notification';
 
 const App = () => {
   const [persons, setPersons] = useState([]);
   const [newName, setNewName] = useState('');
   const [newNumber, setNewNumber] = useState('');
   const [filterNames, setFilterNames] = useState('');
+  const [notification, setNotification] = useState({
+    message: null,
+    type: null,
+  });
 
   // const hook = () => {
   //   axios.get('http://localhost:3001/persons')
@@ -25,13 +31,22 @@ const App = () => {
 
   useEffect(hook, []);
 
+  const clearNotification = () => {
+    setNotification({ message: null, type: null });
+  };
+
+  const showNotification = (message, type) => {
+    setNotification({ message: message, type: type });
+    setTimeout(clearNotification, 3000);
+  };
+
   const addPerson = (event) => {
     event.preventDefault();
 
     const alreadyExist = persons.some((person) => person.name === newName);
     if (alreadyExist) {
-      updateNumber()
-      return
+      updateNumber();
+      return;
     }
 
     const personObject = {
@@ -44,6 +59,7 @@ const App = () => {
       setPersons(persons.concat(returnedPerson));
       setNewName('');
       setNewNumber('');
+      showNotification(`added ${newName}`, 'success');
     });
   };
 
@@ -56,29 +72,41 @@ const App = () => {
       const person = persons.find((p) => p.name === newName);
       const updatedPerson = { ...person, number: newNumber };
 
-      personService.update(person.id, updatedPerson).then((response) => {
-        console.log(response);
-        setPersons(
-          persons.map((p) => (p.id === person.id ? updatedPerson : p))
-        );
-      }).catch((error) => {
-        console.error('Error updating number: ', error)
-        const allPersons = personService.getAll()
-        setPersons(allPersons)
-      })
+      personService
+        .update(person.id, updatedPerson)
+        .then((response) => {
+          console.log(response);
+          setPersons(
+            persons.map((p) => (p.id === person.id ? updatedPerson : p))
+          );
+          showNotification(`updated number of ${newName}`, 'success');
+        })
+        .catch((error) => {
+          console.error('Error updating number: ', error);
+          const allPersons = personService.getAll();
+          setPersons(allPersons);
+        });
 
       return 1;
     }
   };
 
   const removePerson = (id) => {
+    const person = persons.find(p => p.id === id)
+    if (!person) return;
+
     if (window.confirm('Delete this person?')) {
       personService
         .deletion(id)
         .then(() => {
           setPersons(persons.filter((person) => person.id !== id));
         })
-        .catch((error) => console.log('Error deleting: ', error));
+        .catch((error) =>
+          showNotification(
+            `Information of ${person.name} has already been removed from server`,
+            'error'
+          )
+        );
     }
   };
 
@@ -95,6 +123,7 @@ const App = () => {
 
   return (
     <div>
+      <Notification message={notification.message} type={notification.type} />
       <h2>Phonebook</h2>
 
       <Filter OnFilterChange={handleFilter} filterNames={filterNames} />
@@ -115,5 +144,4 @@ const App = () => {
     </div>
   );
 };
-
 export default App;
