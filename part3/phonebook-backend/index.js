@@ -1,5 +1,6 @@
 const express = require('express')
 const app = express()
+const morgan = require('morgan')
 
 app.use(express.json())
 
@@ -25,6 +26,11 @@ let persons = [
         "number": "39-23-6423122"
     }
 ]
+
+morgan.token('content', function (req, res) {
+    return JSON.stringify(req['body'])
+})
+app.use(morgan('tiny :content'))
 
 app.get('/api/persons', (request, response) => {
     response.json(persons)
@@ -86,5 +92,5 @@ app.post('/api/persons', (request, response) => {
 const PORT = 3001;
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
-    console.log('\x1b[36m%s\x1b[0m', ' http://localhost:3001/ ');
+    console.log(' http://localhost:3001/ ');
 });
