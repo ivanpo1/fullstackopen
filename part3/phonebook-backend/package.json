@@ -6,6 +6,7 @@
     "start": "node index.js",
     "dev": "node --watch index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint .",
     "build:ui": "powershell -Command \"Set-Location 'E:/_Coding/fullStackOpen/fullstackopen/part2/phonebook'; npm run build; Remove-Item -Recurse -Force 'E:/_Coding/fullStackOpen/fullstackopen/part3/phonebook-backend/dist' -ErrorAction SilentlyContinue; Move-Item -Path 'dist' -Destination 'E:/_Coding/fullStackOpen/fullstackopen/part3/phonebook-backend'\"",
     "deploy:full": "npm run build:ui && git add . && git commit -m uibuild && git push"
   },
@@ -25,5 +26,11 @@
     "express": "^5.1.0",
     "mongoose": "^8.16.0",
     "morgan": "^1.10.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.30.0",
+    "@stylistic/eslint-plugin-js": "^4.4.1",
+    "eslint": "^9.30.0",
+    "globals": "^16.2.0"
   }
 }
