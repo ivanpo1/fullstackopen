@@ -6,7 +6,7 @@
     "start": "node index.js",
     "dev": "node --watch index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build:ui": "powershell -Command \"Set-Location 'E:/_Coding/fullStackOpen/fullstackopen/part2/phonebook'; npm run build; Remove-Item -Recurse -Force 'E:/_Coding/phonebook-backend/dist' -ErrorAction SilentlyContinue; Move-Item -Path 'dist' -Destination 'E:/_Coding/phonebook-backend'\"",
+    "build:ui": "powershell -Command \"Set-Location 'E:/_Coding/fullStackOpen/fullstackopen/part2/phonebook'; npm run build; Remove-Item -Recurse -Force 'E:/_Coding/fullStackOpen/fullstackopen/part3/phonebook-backend/dist' -ErrorAction SilentlyContinue; Move-Item -Path 'dist' -Destination 'E:/_Coding/fullStackOpen/fullstackopen/part3/phonebook-backend'\"",
     "deploy:full": "npm run build:ui && git add . && git commit -m uibuild && git push"
   },
   "repository": {
