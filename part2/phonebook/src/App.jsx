@@ -16,13 +16,6 @@ const App = () => {
     type: null,
   });
 
-  // const hook = () => {
-  //   axios.get('http://localhost:3001/persons')
-  //     .then((response) => {
-  //       setPersons(response.data)
-  //     })
-  // }
-
   const hook = () => {
     personService.getAll().then((initialPersons) => {
       setPersons(initialPersons);
@@ -55,11 +48,13 @@ const App = () => {
       id: (persons.length + 1).toString(),
     };
 
-    personService.create(personObject).then((returnedPerson) => {
-      setPersons(persons.concat(returnedPerson));
+    personService.create(personObject).then((createdPerson) => {
+      setPersons(persons.concat(createdPerson));
       setNewName('');
       setNewNumber('');
       showNotification(`added ${newName}`, 'success');
+    }).catch(error => {
+      showNotification(error.response.data.error, 'error')
     });
   };
 
@@ -80,6 +75,8 @@ const App = () => {
             persons.map((p) => (p.id === person.id ? updatedPerson : p))
           );
           showNotification(`updated number of ${newName}`, 'success');
+          setNewName('');
+          setNewNumber('');
         })
         .catch((error) => {
           console.error('Error updating number: ', error);
