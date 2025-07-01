@@ -2,8 +2,8 @@ POST http://localhost:3003/api/blogs
 Content-Type: application/json
 
 {
-  "title": "Testing in Todays World",
-  "author": "Testing",
+  "title": "Hola",
+  "author": "Chau",
   "url": "https://fullstackopen.com/",
-  "likes": 15
+  "likes": 1
 }
