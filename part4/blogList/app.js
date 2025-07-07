@@ -1,15 +1,16 @@
-const config = require('./utils/config')
-const logger = require('./utils/logger')
 const express = require('express')
 const mongoose = require('mongoose')
-const middleware = require('./utils/middleware')
+const config = require('./utils/config')
+const logger = require('./utils/logger')
 const blogsRouter = require('./controllers/blogs')
+const middleware = require('./utils/middleware')
 
 const app = express()
 
 logger.info('connection to', config.MONGODB_URI)
 
-mongoose.connect(config.MONGODB_URI)
+mongoose
+  .connect(config.MONGODB_URI)
   .then(() => {
     logger.info('connected to MongoDB')
   }).catch((error) => {
