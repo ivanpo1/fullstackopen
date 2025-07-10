@@ -1,0 +1,41 @@
+POST http://localhost:3003/api/users
+Content-Type: application/json
+
+{
+  "username": "Chimpi.T.Chompa",
+  "name": "Chimpi",
+  "password": "Testing1"
+}
+
+###
+
+POST http://localhost:3003/api/users
+Content-Type: application/json
+
+{
+  "username": "",
+  "name": "Chimpi",
+  "password": "Testing1"
+}
+
+###
+
+POST http://localhost:3003/api/users
+Content-Type: application/json
+
+{
+  "username": "Chimpi.T.Chompa",
+  "name": "Chimpi",
+  "password": ""
+}
+
+###
+
+POST http://localhost:3003/api/users
+Content-Type: application/json
+
+{
+  "username": "Alpargata.Cosmica",
+  "name": "Alpargata",
+  "password": "Testing2"
+}

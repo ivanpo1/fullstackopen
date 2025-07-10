@@ -20,6 +20,7 @@
   "homepage": "https://github.com/ivanpo1/fullstackopen#readme",
   "description": "",
   "dependencies": {
+    "bcrypt": "^6.0.0",
     "cross-env": "^7.0.3",
     "dotenv": "^17.0.0",
     "express": "^5.1.0",
