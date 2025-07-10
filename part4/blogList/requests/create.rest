@@ -12,7 +12,7 @@ Content-Type: application/json
 
 POST http://localhost:3003/api/blogs
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkFscGFyZ2F0YS5Db3NtaWNhMiIsImlkIjoiNjg2ZjhkMzlkNDgxYTVmNDlkMDcyY2YyIiwiaWF0IjoxNzUyMTQxNzk1fQ.RHl7DmvXgeOwRsamIx7trASml1WXDawcb-CgOEaBxiE
+Authorization: Bearer
 
 {
   "title": "How to cook pasta",
