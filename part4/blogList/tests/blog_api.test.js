@@ -12,6 +12,7 @@ const User = require('../models/user')
 const api = supertest(app)
 
 let user
+let token
 
 beforeEach(async () => {
   await Blog.deleteMany({})
@@ -25,6 +26,15 @@ beforeEach(async () => {
   const passwordHash = await bcrypt.hash('Testing1', 10)
   user = new User({ username: 'root', passwordHash })
   await user.save()
+
+  const loginResponse = await api
+    .post('/api/login')
+    .send({
+      username: 'root',
+      password: 'Testing1'
+    })
+
+  token = loginResponse.body.token
 })
 
 describe('Read: existing blogs', () => {
@@ -60,6 +70,7 @@ describe('Create: new blogs', () => {
 
     await api
       .post('/api/blogs')
+      .set('Authorization', `Bearer ${token}`)
       .send(newBlog)
       .expect(201)
       .expect('Content-Type', /application\/json/)
@@ -78,6 +89,7 @@ describe('Create: new blogs', () => {
 
     await api
       .post('/api/blogs')
+      .set('Authorization', `Bearer ${token}`)
       .send(newBlog)
       .expect(201)
       .expect('Content-Type', /application\/json/)
@@ -94,6 +106,7 @@ describe('Create: new blogs', () => {
 
     await api
       .post('/api/blogs')
+      .set('Authorization', `Bearer ${token}`)
       .send(newBlog)
       .expect(400)
   })
@@ -101,18 +114,32 @@ describe('Create: new blogs', () => {
 
 describe('Delete: existing Blogs', () => {
   test('a blog can be deleted', async () => {
-    const blogsAtStart = await blogs.blogsInDb()
-    const blogToDelete = blogsAtStart[0]
+    // const blogsAtStart = await blogs.blogsInDb()
+
+    const newBlog = {
+      title: 'Dancing in the rain', author: 'Chimpi T. Chompa', url: 'https://chimpichompa.com/',
+    }
+
+    const blogToDelete = await api
+      .post('/api/blogs')
+      .set('Authorization', `Bearer ${token}`)
+      .send(newBlog)
+      .expect(201)
+      .expect('Content-Type', /application\/json/)
+
+    const blogsAfterCreation = await blogs.blogsInDb()
+    assert.strictEqual(blogsAfterCreation.length, blogs.initialBlogs.length + 1)
 
     await api
-      .delete(`/api/blogs/${blogToDelete.id}`)
+      .delete(`/api/blogs/${blogToDelete.body.id}`)
+      .set('Authorization', `Bearer ${token}`)
       .expect(204)
 
     const blogsAtEnd = await blogs.blogsInDb()
     const contents = blogsAtEnd.map(b => b.id)
     assert(!contents.includes(blogToDelete.id))
 
-    assert.strictEqual(blogsAtEnd.length, blogs.initialBlogs.length - 1)
+    assert.strictEqual(blogsAtEnd.length, blogs.initialBlogs.length)
   })
 })
 
@@ -154,46 +181,96 @@ describe('Users: Create', () => {
     assert(usernames.includes(newUser.username))
   })
 
-  test('Invalid user data fails to create user', async () => {
+  test('No username fails to create user', async () => {
     const usersAtStart = await helper.usersInDb()
 
     const noUsername = {
       username: '',
-      name: 'Ivan Poppino',
+      name: 'testing',
       password: 'Chimichurri1'
     }
 
-    const noPassword = {
-      username: 'ivanpo1',
-      name: 'Ivan Poppino',
-      password: ''
-    }
-
-    const usernameTooShort = {
-      username: 'iva',
-      name: 'Ivan Poppino',
-      password: 'Testing1'
-    }
-
-    const invalidCharacters = {
-      username: '{"iva"}',
-      name: 'Ivan Poppino',
-      password: 'Testing1'
-    }
-
-    await api
+    const response = await api
       .post('/api/users')
-      .send(usernameTooShort)
-      .expect(400)
-      .send(noPassword)
-      .expect(400)
       .send(noUsername)
       .expect(400)
-      .send(invalidCharacters)
-      .expect(400)
+
+    assert.strictEqual(
+      response.body.error,
+      'Username is required'
+    )
 
     const usersAtEnd = await helper.usersInDb()
     assert.strictEqual(usersAtEnd.length, usersAtStart.length)
+  })
+
+  test('No password fails to create user', async () => {
+    const usersAtStart = await helper.usersInDb()
+
+    const noPassword = {
+      username: 'testing ',
+      name: 'testingTheTest',
+      password: ''
+    }
+
+    const response = await api
+      .post('/api/users')
+      .send(noPassword)
+      .expect(400)
+
+    assert.strictEqual(
+      response.body.error,
+      'Password is required'
+    )
+
+    const usersAtEnd = await helper.usersInDb()
+    assert.strictEqual(usersAtEnd.length, usersAtStart.length)
+  })
+
+  test('Too short of username fails to create user', async () => {
+    const usersAtStart = await helper.usersInDb()
+
+    const usernameTooShort = {
+      username: 'tes',
+      name: 'testingTheTest',
+      password: 'Testing1'
+    }
+
+    const response = await api
+      .post('/api/users')
+      .send(usernameTooShort)
+      .expect(400)
+
+    assert.ok(
+      response.body.error.includes('is shorter than the minimum allowed length')
+    )
+
+    const usersAtEnd = await helper.usersInDb()
+    assert.strictEqual(usersAtEnd.length, usersAtStart.length)
+
+  })
+
+  test('Invalid characters fails to create user', async () => {
+    const usersAtStart = await helper.usersInDb()
+
+    const invalidCharacters = {
+      username: '{"test"}',
+      name: 'testingTheTest',
+      password: 'Testing1'
+    }
+
+    const response = await api
+      .post('/api/users')
+      .send(invalidCharacters)
+      .expect(400)
+
+    assert.ok(
+      response.body.error.includes('Password contains invalid characters')
+    )
+
+    const usersAtEnd = await helper.usersInDb()
+    assert.strictEqual(usersAtEnd.length, usersAtStart.length)
+
   })
 })
 

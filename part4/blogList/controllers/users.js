@@ -6,11 +6,11 @@ usersRouter.post('/', async (request, response) => {
   const { username, name, password } = request.body
 
   if (!password) {
-    return response.status(400).json({ error: 'Password must be' })
+    return response.status(400).json({ error: 'Password is required' })
   }
 
   if (!username) {
-    return response.status(400).json({ error: 'Username must be' })
+    return response.status(400).json({ error: 'Username is required' })
   }
 
   if (password.length < 8) {
