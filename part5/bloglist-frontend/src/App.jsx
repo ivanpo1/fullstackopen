@@ -56,6 +56,7 @@ const App = () => {
     blogService.setToken(null)
     setUser(null)
     window.localStorage.removeItem('loggedUser')
+    showNotification('Logged out!', 'success')
   }
 
   const handleBlogForm = async (event) => {
