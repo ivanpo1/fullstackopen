@@ -13,6 +13,7 @@ const App = () => {
   const [user, setUser] = useState(null)
   const [notification, setNotification] = useState(null)
 
+
   useEffect(() => {
     blogService.getAll().then(blogs =>
       setBlogs(blogs)
@@ -85,6 +86,38 @@ const App = () => {
     }
   }
 
+  const incrementLikes = async (blog) => {
+    const updatedBlog = {
+      ...blog,
+      likes: blog.likes + 1,
+    }
+
+    try {
+      const updatedBlogResponse = await blogService.update(blog.id, updatedBlog)
+
+      setBlogs(blogs.map(blog =>
+        blog.id === updatedBlogResponse.id ? updatedBlogResponse : blog
+      ))
+    } catch (error) {
+      console.log("failed to update blog", error)
+    }
+  }
+
+  const handleDeleteBlog = async (id) => {
+    if (window.confirm()) {
+      try {
+        const response = await blogService.deletion(id)
+        console.log(response)
+        showNotification('Blog deleted!', 'success')
+        blogService.getAll().then(blogs =>
+          setBlogs(blogs)
+        )
+      } catch (error) {
+        showNotification(error, 'error')
+      }
+    }
+  }
+
   const loginForm = () => (
     <form onSubmit={handleLogin}>
       <div>
@@ -120,8 +153,8 @@ const App = () => {
 
           <div>
             <h2>blogs</h2>
-            {blogs.map(blog =>
-              <Blog key={blog.id} blog={blog}/>
+            {blogs.toSorted((a, b) => b.likes - a.likes).map(blog =>
+              <Blog key={blog.id} blog={blog} incrementLikes={incrementLikes} deleteBlog={handleDeleteBlog} currentUser={user}/>
             )}
           </div>
           <button onClick={handleLogout}>Logout</button>

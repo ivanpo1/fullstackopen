@@ -18,3 +18,9 @@
 h2 {
     background-color: lightgreen;
 }
+
+.extra {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
