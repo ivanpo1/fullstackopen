@@ -1,16 +1,15 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Blog from './components/Blog'
 import blogService from './services/blogs'
 import loginService from './services/login'
 import Notification from './components/Notification'
+import Togglable from "./components/Togglable.jsx";
+import BlogForm from "./components/BlogForm.jsx";
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
-  const [title, setTitle] = useState('')
-  const [author, setAuthor] = useState('')
-  const [url, setUrl] = useState('')
   const [user, setUser] = useState(null)
   const [notification, setNotification] = useState(null)
 
@@ -28,6 +27,14 @@ const App = () => {
       blogService.setToken(user.token)
     }
   }, [])
+
+  const blogFormRef = useRef()
+
+  const blogForm = () => (
+    <Togglable buttonLabel='new blog' ref={blogFormRef}>
+      <BlogForm createBlog={createBlog} />
+    </Togglable>
+  )
 
   const showNotification = (message, type) => {
     setNotification({ message, type })
@@ -59,20 +66,23 @@ const App = () => {
     showNotification('Logged out!', 'success')
   }
 
-  const handleBlogForm = async (event) => {
-    event.preventDefault()
-    const blogObject = {
-      title: title,
-      author: author,
-      url: url,
-    }
+  const createBlog = async (blogObject) => {
+    try {
+      blogObject = {
+        title: blogObject.title,
+        author: blogObject.author,
+        url: blogObject.url,
+      }
+      blogFormRef.current.toggleVisibility()
+      const createdBlog = await blogService.create(blogObject)
+      setBlogs(blogs.concat(createdBlog))
+      showNotification(`a new blog ${blogObject.title} by ${blogObject.author} was added`, 'success')
 
-    const createdBlog = await blogService.create(blogObject)
-    setBlogs(blogs.concat(createdBlog))
-    setTitle('')
-    setAuthor('')
-    setUrl('')
-    showNotification(`a new blog ${title} by ${author} was added`, 'success')
+      return true
+    } catch (error) {
+      showNotification(`Failed to create blog post ${error}`, 'error')
+      return false
+    }
   }
 
   const loginForm = () => (
@@ -99,44 +109,6 @@ const App = () => {
     </form>
   )
 
-  const handleTitleChange = (event) => {
-    setTitle(event.target.value);
-  }
-
-  const handleUrlChange = (event) => {
-    setUrl(event.target.value);
-  }
-
-  const handleAuthorChange = (event) => {
-    setAuthor(event.target.value);
-  }
-
-  const blogForm = () => (
-    <form onSubmit={handleBlogForm}>
-      <div>
-        title:
-        <input
-          value={title}
-          onChange={handleTitleChange}
-        />
-      </div>
-      <div>
-        author:
-        <input
-          value={author}
-          onChange={handleAuthorChange}
-        />
-      </div>
-      <div>
-        url:
-        <input
-          value={url}
-          onChange={handleUrlChange}
-        />
-      </div>
-      <button type="submit">create</button>
-    </form>
-  )
 
   return (
     <div>
