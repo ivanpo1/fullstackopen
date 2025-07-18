@@ -19,15 +19,15 @@ const Blog = ({ blog, incrementLikes, deleteBlog, currentUser }) => {
     width: 500,
   }
 
-  console.log('BLOG:', blog)
+  // console.log('BLOG:', blog)
 
   return (
-    <div style={blogStyle}>
+    <div style={blogStyle} className='blogContainer'>
       <i>{blog.title}</i> by {blog.author}
       <button onClick={toggleVisibility}>{visible ? 'hide' : 'view'}</button>
-      <div style={showWhenVisible}>
-        <p>url: {blog.url}</p>
-        <p>likes: {blog.likes}
+      <div style={showWhenVisible} className='expandedDetails'>
+        <p data-testid='blog-url'>url: {blog.url}</p>
+        <p data-testid='blog-likes'>likes: {blog.likes}
           <button onClick={() => incrementLikes(blog)}>like</button>
         </p>
         <p>user: {blog.user?.name}</p>
