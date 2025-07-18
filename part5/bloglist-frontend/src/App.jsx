@@ -3,8 +3,8 @@ import Blog from './components/Blog'
 import blogService from './services/blogs'
 import loginService from './services/login'
 import Notification from './components/Notification'
-import Togglable from "./components/Togglable.jsx";
-import BlogForm from "./components/BlogForm.jsx";
+import Togglable from './components/Togglable.jsx'
+import BlogForm from './components/BlogForm.jsx'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
@@ -33,7 +33,7 @@ const App = () => {
 
   const blogForm = () => (
     <Togglable buttonLabel='new blog' ref={blogFormRef}>
-      <BlogForm createBlog={createBlog} />
+      <BlogForm createBlog={createBlog}/>
     </Togglable>
   )
 
@@ -99,7 +99,7 @@ const App = () => {
         blog.id === updatedBlogResponse.id ? updatedBlogResponse : blog
       ))
     } catch (error) {
-      console.log("failed to update blog", error)
+      console.log('failed to update blog', error)
     }
   }
 
@@ -145,7 +145,7 @@ const App = () => {
 
   return (
     <div>
-      <Notification notification={notification} />
+      <Notification notification={notification}/>
       {user === null ?
         loginForm() :
         <div>

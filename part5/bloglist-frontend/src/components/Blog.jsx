@@ -1,4 +1,6 @@
-import { useState } from "react";
+import { useState } from 'react'
+import PropTypes from 'prop-types'
+import BlogForm from './BlogForm.jsx'
 
 const Blog = ({ blog, incrementLikes, deleteBlog, currentUser }) => {
   const [visible, setVisible] = useState(false)
@@ -21,11 +23,13 @@ const Blog = ({ blog, incrementLikes, deleteBlog, currentUser }) => {
 
   return (
     <div style={blogStyle}>
-    <i>{blog.title}</i> by {blog.author}
+      <i>{blog.title}</i> by {blog.author}
       <button onClick={toggleVisibility}>{visible ? 'hide' : 'view'}</button>
       <div style={showWhenVisible}>
         <p>url: {blog.url}</p>
-        <p>likes: {blog.likes} <button onClick={() => incrementLikes(blog)}>like</button></p>
+        <p>likes: {blog.likes}
+          <button onClick={() => incrementLikes(blog)}>like</button>
+        </p>
         <p>user: {blog.user?.name}</p>
         {currentUser && blog.user && (currentUser.id === blog.user.id) &&
           <button onClick={() => deleteBlog(blog.id)}>remove</button>
@@ -34,4 +38,22 @@ const Blog = ({ blog, incrementLikes, deleteBlog, currentUser }) => {
     </div>
   )
 }
+
+Blog.propTypes = {
+  blog: PropTypes.shape({
+    title: PropTypes.string.isRequired,
+    likes: PropTypes.number.isRequired,
+    author: PropTypes.string.isRequired,
+    url: PropTypes.string.isRequired,
+  }).isRequired,
+  incrementLikes: PropTypes.func.isRequired,
+  deleteBlog: PropTypes.func.isRequired,
+  currentUser: PropTypes.shape({
+    username: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+    id: PropTypes.string.isRequired,
+  })
+}
+
+
 export default Blog
