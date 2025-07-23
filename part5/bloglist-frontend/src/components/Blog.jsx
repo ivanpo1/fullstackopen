@@ -27,7 +27,7 @@ const Blog = ({ blog, incrementLikes, deleteBlog, currentUser }) => {
       <button onClick={toggleVisibility}>{visible ? 'hide' : 'view'}</button>
       <div style={showWhenVisible} className='expandedDetails'>
         <p data-testid='blog-url'>url: {blog.url}</p>
-        <p data-testid='blog-likes'>likes: {blog.likes}
+        <p data-testid='blog-likes'>likes: <span data-testid="likes-count">{blog.likes}</span>
           <button onClick={() => incrementLikes(blog)}>like</button>
         </p>
         <p>user: {blog.user?.name}</p>
