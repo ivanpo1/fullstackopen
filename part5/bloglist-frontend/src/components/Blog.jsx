@@ -19,11 +19,9 @@ const Blog = ({ blog, incrementLikes, deleteBlog, currentUser }) => {
     width: 500,
   }
 
-  // console.log('BLOG:', blog)
-
   return (
     <div style={blogStyle} className='blogContainer'>
-      <i>{blog.title}</i> by {blog.author}
+      <span data-testid='blog-title'>{blog.title}</span> by {blog.author}
       <button onClick={toggleVisibility}>{visible ? 'hide' : 'view'}</button>
       <div style={showWhenVisible} className='expandedDetails'>
         <p data-testid='blog-url'>url: {blog.url}</p>
