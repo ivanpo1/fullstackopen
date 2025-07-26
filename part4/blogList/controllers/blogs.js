@@ -8,23 +8,40 @@ blogsRouter.get('/', async (request, response) => {
   response.json(blogs)
 })
 
-blogsRouter.post('/', userExtractor, async (request, response) => {
-  const body = request.body
-  const user = await User.findById(request.user.id)
+blogsRouter.post('/', userExtractor, async (request, response, next) => {
+  try {
+    const body = request.body
+    if (!body.title || !body.url || !body.author) {
+      return response.status(400).json({
+        error: 'Title, Url and Author are required fields'
+      })
+    }
+    const user = await User.findById(request.user.id)
+    if (!user) {
+      return response.status(404).json({
+        error: 'User not found'
+      })
+    }
 
-  const blog = new Blog({
-    title: body.title,
-    author: body.author,
-    url: body.url,
-    user: user._id,
-    likes: body.likes || 0,
-  })
+    const blog = new Blog({
+      title: body.title,
+      author: body.author,
+      url: body.url,
+      user: user._id,
+      likes: body.likes || 0,
+    })
 
-  const savedBlog = await blog.save()
+    const savedBlog = await blog.save()
 
-  user.blogs = user.blogs.concat(savedBlog._id)
-  await user.save()
-  response.status(201).json(savedBlog)
+    user.blogs = user.blogs.concat(savedBlog._id)
+    await user.save()
+
+    const populatedBlog = await Blog.findById(savedBlog._id).populate('user', { username: 1, name: 1 })
+    response.status(201).json(populatedBlog)
+
+  } catch(error) {
+    next(error)
+  }
 })
 
 blogsRouter.delete('/:id', userExtractor, async (request, response) => {
