@@ -13,7 +13,6 @@ const notificationSlice = createSlice({
   }
 })
 
-
 export const { setNotification, clearNotification } = notificationSlice.actions
 
 export const showNotification = (message, timeout = 5000) => {
