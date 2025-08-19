@@ -25,7 +25,7 @@ const App = () => {
   const blogFormRef = useRef()
 
   const blogForm = () => (
-    <Togglable buttonLabel="new blog" ref={blogFormRef}>
+    <Togglable buttonLabel="New Blog" ref={blogFormRef}>
       <BlogForm />
     </Togglable>
   )
@@ -46,7 +46,14 @@ const App = () => {
         <p className="userLogged">{user.name} logged-in</p>
         <Notification />
         <BlogList />
-        <button onClick={() => dispatch(logoutUser())}>Logout</button>
+        <button
+          onClick={() => {
+            dispatch(logoutUser())
+            dispatch(showNotification('See you later Aligator'))
+          }}
+        >
+          Logout
+        </button>
         {blogForm()}
       </div>
     </div>

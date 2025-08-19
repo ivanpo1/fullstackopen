@@ -6,6 +6,7 @@ const Notification = () => {
   if (!notification) return null
 
   const style = {
+    textAlign: 'center',
     border: 'solid',
     padding: 10,
     borderWidth: 1,

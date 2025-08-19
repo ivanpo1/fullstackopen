@@ -17,10 +17,14 @@ const BlogList = () => {
     }
   }
 
-  const handleDelete = async (id) => {
-    if (window.confirm()) {
+  const handleDelete = async (blog) => {
+    if (
+      window.confirm(
+        `Are you sure you want to delete "${blog.title}" by ${blog.author}?`
+      )
+    ) {
       try {
-        dispatch(deleteBlog(id))
+        dispatch(deleteBlog(blog.id))
         dispatch(showNotification('Blog deleted!', 'success'))
       } catch (error) {
         dispatch(showNotification(`Error deleting Blog: ${error}`, 'error'))

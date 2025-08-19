@@ -30,7 +30,7 @@ const Blog = ({ blog, onLike, onDelete, currentUser }) => {
         </p>
         <p>user: {blog.user?.name}</p>
         {currentUser && blog.user && currentUser.id === blog.user.id && (
-          <button onClick={() => onDelete(blog.id)}>remove</button>
+          <button onClick={() => onDelete(blog)}>remove</button>
         )}
       </div>
     </div>

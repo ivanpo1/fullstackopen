@@ -1,19 +1,19 @@
-.notification.success {
-  color: green;
-  background: lightgreen;
-}
-.notification.error {
-  color: red;
-  background: lightgrey;
-}
+/*.notification.success {*/
+/*  color: green;*/
+/*  background: lightgreen;*/
+/*}*/
+/*.notification.error {*/
+/*  color: red;*/
+/*  background: lightgrey;*/
+/*}*/
 
-.notification {
-  font-size: 20px;
-  border-style: solid;
-  border-radius: 5px;
-  padding: 10px;
-  margin-bottom: 10px;
-}
+/*.notification {*/
+/*  font-size: 20px;*/
+/*  border-style: solid;*/
+/*  border-radius: 5px;*/
+/*  padding: 10px;*/
+/*  margin-bottom: 10px;*/
+/*}*/
 
 h2 {
   background-color: #eed120;
@@ -33,4 +33,8 @@ h2 {
     font-size: 20px;
     color: #444444;
     margin-left: 5px;
+}
+
+button {
+    margin: 3px;
 }

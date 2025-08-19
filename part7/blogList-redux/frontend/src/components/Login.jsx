@@ -1,6 +1,7 @@
 import { useDispatch } from 'react-redux'
 import { loginUser } from '../reducers/userReducer.js'
 import { useState } from 'react'
+import { showNotification } from '../reducers/notificationReducer.js'
 
 const Login = () => {
   const dispatch = useDispatch()
@@ -12,6 +13,7 @@ const Login = () => {
     dispatch(loginUser({ username, password }))
     setUsername('')
     setPassword('')
+    dispatch(showNotification(`Welcome ${username}`, 'info'))
   }
 
   return (
