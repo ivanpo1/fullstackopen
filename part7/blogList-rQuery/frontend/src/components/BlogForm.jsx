@@ -1,24 +1,34 @@
 import { useState } from 'react'
-import PropTypes from 'prop-types'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { createBlogQ } from '../requests.js'
+import { useShowNotification } from '../NotificationContext.jsx'
 
-const BlogForm = ({ createBlog }) => {
+const BlogForm = () => {
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
 
-  const addBlog = async (event) => {
+  const showNotification = useShowNotification()
+  const queryClient = useQueryClient()
+  const newBlogMutation = useMutation({
+    mutationFn: createBlogQ,
+    onSuccess: (newBlog) => {
+      const blogs = queryClient.getQueryData(['blogs'])
+      queryClient.setQueryData(['blogs'], blogs.concat(newBlog))
+    },
+  })
+
+  const handleBlogSubmit = async (event) => {
     event.preventDefault()
-    const blogObject = { title, author, url }
-    const success = await createBlog(blogObject)
-    if (success) {
-      setTitle('')
-      setAuthor('')
-      setUrl('')
-    }
+    newBlogMutation.mutate({ title, author, url })
+    showNotification(`New Blog added: ${title}`)
+    setTitle('')
+    setAuthor('')
+    setUrl('')
   }
 
   return (
-    <form onSubmit={addBlog}>
+    <form onSubmit={handleBlogSubmit}>
       <div>
         title:
         <input
@@ -46,10 +56,6 @@ const BlogForm = ({ createBlog }) => {
       <button type="submit">create</button>
     </form>
   )
-}
-
-BlogForm.propTypes = {
-  createBlog: PropTypes.func.isRequired,
 }
 
 export default BlogForm

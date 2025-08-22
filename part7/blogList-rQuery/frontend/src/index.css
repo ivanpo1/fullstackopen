@@ -24,3 +24,7 @@ h2 {
   flex-direction: column;
   justify-content: center;
 }
+
+td {
+    text-align: center;
+}

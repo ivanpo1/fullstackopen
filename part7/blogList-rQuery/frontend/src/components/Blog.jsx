@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import PropTypes from 'prop-types'
-import BlogForm from './BlogForm.jsx'
 
 const Blog = ({ blog, incrementLikes, deleteBlog, currentUser }) => {
   const [visible, setVisible] = useState(false)

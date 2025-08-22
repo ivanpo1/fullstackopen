@@ -11,7 +11,7 @@ test('renders content', () => {
   }
 
   const { container } = render(
-    <Blog blog={blog} incrementLikes={vi.fn()} deleteBlog={vi.fn()} />,
+    <Blog blog={blog} incrementLikes={vi.fn()} deleteBlog={vi.fn()} />
   )
 
   const div = container.querySelector('.blogContainer')
@@ -37,9 +37,7 @@ test('url and likes are shown after "view" is clicked', async () => {
   await user.click(button)
 
   expect(screen.getByTestId('blog-url')).toHaveTextContent(blog.url)
-  expect(screen.getByTestId('blog-likes')).toHaveTextContent(
-    String(blog.likes),
-  )
+  expect(screen.getByTestId('blog-likes')).toHaveTextContent(String(blog.likes))
 
   expect(screen.getByTestId('blog-url')).toBeVisible()
   expect(screen.getByTestId('blog-likes')).toBeVisible()
@@ -61,7 +59,7 @@ test('like button being clicked calls corresponding function correctly', async (
   const mockLikeHandler = vi.fn()
 
   render(
-    <Blog blog={blog} incrementLikes={mockLikeHandler} deleteBlog={vi.fn()} />,
+    <Blog blog={blog} incrementLikes={mockLikeHandler} deleteBlog={vi.fn()} />
   )
 
   const user = userEvent.setup()
