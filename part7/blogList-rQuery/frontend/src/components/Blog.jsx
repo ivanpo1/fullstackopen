@@ -1,7 +1,8 @@
 import { useState } from 'react'
 import PropTypes from 'prop-types'
+import { useCanDeleteBlog } from '../userContext.jsx'
 
-const Blog = ({ blog, incrementLikes, deleteBlog, currentUser }) => {
+const Blog = ({ blog, incrementLikes, deleteBlog }) => {
   const [visible, setVisible] = useState(false)
   const hideWhenVisible = { display: visible ? 'none' : '' }
   const showWhenVisible = { display: visible ? '' : 'none' }
@@ -9,6 +10,8 @@ const Blog = ({ blog, incrementLikes, deleteBlog, currentUser }) => {
   const toggleVisibility = () => {
     setVisible(!visible)
   }
+
+  const canDeleteBlog = useCanDeleteBlog()
 
   const blogStyle = {
     padding: 4,
@@ -29,7 +32,7 @@ const Blog = ({ blog, incrementLikes, deleteBlog, currentUser }) => {
           <button onClick={() => incrementLikes(blog)}>like</button>
         </p>
         <p>user: {blog.user?.name}</p>
-        {currentUser && blog.user && currentUser.id === blog.user.id && (
+        {canDeleteBlog(blog) && (
           <button onClick={() => deleteBlog(blog.id)}>remove</button>
         )}
       </div>

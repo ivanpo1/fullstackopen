@@ -1,4 +1,4 @@
-import { createContext, useReducer, useContext } from 'react'
+import { createContext, useReducer, useContext, useEffect } from 'react'
 import loginService from './services/login'
 import { setToken } from './requests.js'
 
@@ -23,8 +23,16 @@ const initUser = () => {
 export const UserContextProvider = (props) => {
   const [user, userDispatch] = useReducer(userReducer, null, initUser)
 
+  useEffect(() => {
+    if (user) {
+      setToken(user.token)
+    }
+  }, [user])
+
+  const canDeleteBlog = (blog) => user && blog.user && user.id === blog.user.id
+
   return (
-    <UserContext.Provider value={[user, userDispatch]}>
+    <UserContext.Provider value={[user, userDispatch, canDeleteBlog]}>
       {props.children}
     </UserContext.Provider>
   )
@@ -35,12 +43,17 @@ export const useUser = () => {
   return userAndDispatch[0]
 }
 
+export const useCanDeleteBlog = () => {
+  const userAndDispatch = useContext(UserContext)
+  return userAndDispatch[2]
+}
+
 export const useUserLogin = () => {
   const userAndDispatch = useContext(UserContext)
   const dispatch = userAndDispatch[1]
   return async (payload) => {
     const user = await loginService.login(payload)
-    setToken(user.token)
+    // setToken(user.token)
     dispatch({ type: 'SET', payload: user })
     window.localStorage.setItem('loggedUser', JSON.stringify(user))
   }

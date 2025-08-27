@@ -28,3 +28,24 @@ h2 {
 td {
     text-align: center;
 }
+
+.navigation {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background-color: beige;
+    padding: 4px;
+    margin: 6px;
+}
+
+body {
+    margin: 6px;
+}
+
+a {
+    padding: 3px;
+}
+
+.commentContainer {
+    margin-left: 16px;
+}

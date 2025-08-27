@@ -8,7 +8,9 @@ export const setToken = (newToken) => {
   token = `Bearer ${newToken}`
 }
 
-export const getBlogs = () => axios.get(baseUrl).then((res) => res.data)
+export const getAllBlogs = () => axios.get(baseUrl).then((res) => res.data)
+export const getBlog = (id) =>
+  axios.get(`/api/blogs/${id}`).then((res) => res.data)
 
 export const createBlogQ = (newBlog) => {
   const config = { headers: { Authorization: token } }
@@ -22,12 +24,18 @@ export const updateBlog = (updatedBlog) => {
     .then((res) => res.data)
 }
 
-export const deleteBlog = (id) => {
+export const deleteBlog = async (id) => {
   const config = { headers: { Authorization: token } }
-  axios.delete(`${baseUrl}/${id}`, config).then((res) => res.data)
-  return id
+  return await axios.delete(`${baseUrl}/${id}`, config)
 }
 
 export const getAllUsers = () => axios.get('/api/users').then((res) => res.data)
 export const getUser = (id) =>
   axios.get(`/api/users/${id}`).then((res) => res.data)
+
+export const addComment = (blogId, comment) => {
+  console.log('blogId request', blogId)
+  return axios
+    .post(`/api/blogs/${blogId}/comments`, { comment })
+    .then((res) => res.data)
+}

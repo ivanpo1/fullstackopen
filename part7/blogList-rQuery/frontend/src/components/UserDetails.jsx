@@ -4,7 +4,6 @@ import { useQuery } from '@tanstack/react-query'
 
 const UserDetails = () => {
   const { id } = useParams()
-  console.log('id', id)
   const {
     data: user,
     isLoading,
@@ -16,7 +15,7 @@ const UserDetails = () => {
 
   if (isLoading) return <div>Getting user data...</div>
   if (error) return <div>Failed to get user data.</div>
-  console.log('user', user)
+
   return (
     <div>
       <h2>{user.name}</h2>

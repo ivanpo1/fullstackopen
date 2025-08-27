@@ -1,59 +1,12 @@
-import Blog from './Blog.jsx'
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import { deleteBlog, getBlogs, updateBlog } from '../requests.js'
-import { useShowNotification } from '../NotificationContext.jsx'
+import { useQuery } from '@tanstack/react-query'
+import { getAllBlogs } from '../requests.js'
+import { Link } from 'react-router-dom'
 
-const BlogList = ({ user }) => {
+const BlogList = () => {
   const result = useQuery({
     queryKey: ['blogs'],
-    queryFn: getBlogs,
+    queryFn: getAllBlogs,
   })
-
-  const showNotification = useShowNotification()
-
-  const queryClient = useQueryClient()
-  const updateBlogMutation = useMutation({
-    mutationFn: updateBlog,
-    onSuccess: (updatedBlog) => {
-      queryClient.setQueryData(['blogs'], (oldBlogs) =>
-        oldBlogs.map((blog) =>
-          blog.id === updatedBlog.id ? updatedBlog : blog
-        )
-      )
-    },
-  })
-
-  const deleteBlogMutation = useMutation({
-    mutationFn: deleteBlog,
-    onSuccess: (id) => {
-      queryClient.setQueryData(['blogs'], (oldBlogs) =>
-        oldBlogs.filter((b) => b.id !== id)
-      )
-      showNotification('Blog deleted!')
-    },
-  })
-
-  const handleLikes = async (blog) => {
-    const updatedBlog = {
-      ...blog,
-      likes: blog.likes + 1,
-    }
-    try {
-      updateBlogMutation.mutate(updatedBlog)
-    } catch (error) {
-      console.log('failed to update blog', error)
-    }
-  }
-
-  const handleDeleteBlog = async (id) => {
-    if (window.confirm()) {
-      try {
-        deleteBlogMutation.mutate(id)
-      } catch (error) {
-        showNotification(error)
-      }
-    }
-  }
 
   if (result.isLoading) {
     return <div>Loading data...</div>
@@ -66,13 +19,9 @@ const BlogList = ({ user }) => {
       {blogs
         .toSorted((a, b) => b.likes - a.likes)
         .map((blog) => (
-          <Blog
-            key={blog.id}
-            blog={blog}
-            incrementLikes={handleLikes}
-            deleteBlog={handleDeleteBlog}
-            currentUser={user}
-          />
+          <li key={blog.id}>
+            <Link to={`/blogs/${blog.id}`}>{blog.title}</Link>
+          </li>
         ))}
     </div>
   )
