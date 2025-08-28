@@ -35,7 +35,7 @@ export const useBlogActions = () => {
         )
       }
 
-      showNotification('Blog deleted!')
+      showNotification('Blog deleted!', 'success')
     },
   })
 
@@ -69,7 +69,7 @@ export const useBlogActions = () => {
       try {
         deleteBlogMutation.mutate(id)
       } catch (error) {
-        showNotification(error)
+        showNotification(error, 'error')
       }
     }
   }

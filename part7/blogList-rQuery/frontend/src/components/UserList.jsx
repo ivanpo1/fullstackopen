@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 import { getAllUsers } from '../requests.js'
 import { Link } from 'react-router-dom'
+import { Table } from 'react-bootstrap'
 
 const UserList = () => {
   const {
@@ -16,22 +17,25 @@ const UserList = () => {
   if (error) return <div>Error fetching users</div>
 
   return (
-    <table>
-      <tbody>
-        <tr>
-          <th></th>
-          <th>blogs created</th>
-        </tr>
-        {users.map((user) => (
-          <tr key={user.id}>
-            <td>
-              <Link to={`/users/${user.id}`}>{user.name}</Link>
-            </td>
-            <td>{user.blogs.length}</td>
+    <div>
+      <h2>User List</h2>
+      <Table striped hover>
+        <tbody>
+          <tr>
+            <th>User</th>
+            <th>Blogs created</th>
           </tr>
-        ))}
-      </tbody>
-    </table>
+          {users.map((user) => (
+            <tr key={user.id}>
+              <td>
+                <Link to={`/users/${user.id}`}>{user.name}</Link>
+              </td>
+              <td>{user.blogs.length}</td>
+            </tr>
+          ))}
+        </tbody>
+      </Table>
+    </div>
   )
 }
 

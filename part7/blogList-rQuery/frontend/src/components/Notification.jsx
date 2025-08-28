@@ -1,4 +1,5 @@
 import { useNotification } from '../NotificationContext.jsx'
+import { Alert } from 'react-bootstrap'
 
 const Notification = () => {
   const notification = useNotification()
@@ -7,7 +8,8 @@ const Notification = () => {
     return null
   }
 
-  return <div className={'notification'}>{notification}</div>
+  // return <div className={'notification'}>{notification}</div>
+  return <Alert variant={notification.type}>{notification.message}</Alert>
 }
 
 export default Notification

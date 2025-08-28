@@ -1,6 +1,7 @@
 import { Link, useParams } from 'react-router-dom'
 import { getUser } from '../requests.js'
 import { useQuery } from '@tanstack/react-query'
+import { Table } from 'react-bootstrap'
 
 const UserDetails = () => {
   const { id } = useParams()
@@ -19,12 +20,18 @@ const UserDetails = () => {
   return (
     <div>
       <h2>{user.name}</h2>
-      <h3>added blogs</h3>
-      {user.blogs.map((blog) => (
-        <li key={blog.id}>
-          <Link to={`/blogs/${blog.id}`}>{blog.title}</Link>
-        </li>
-      ))}
+      <h4>Added blogs</h4>
+      <Table striped hover>
+        <tbody>
+          {user.blogs.map((blog) => (
+            <tr key={blog.id}>
+              <td>
+                <Link to={`/blogs/${blog.id}`}>{blog.title}</Link>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </Table>
     </div>
   )
 }

@@ -2,6 +2,9 @@ import { useState } from 'react'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { createBlogQ } from '../requests.js'
 import { useShowNotification } from '../NotificationContext.jsx'
+import Button from 'react-bootstrap/Button'
+import FloatingLabel from 'react-bootstrap/FloatingLabel'
+import Form from 'react-bootstrap/Form'
 
 const BlogForm = () => {
   const [title, setTitle] = useState('')
@@ -15,45 +18,54 @@ const BlogForm = () => {
     onSuccess: (newBlog) => {
       const blogs = queryClient.getQueryData(['blogs'])
       queryClient.setQueryData(['blogs'], blogs.concat(newBlog))
+      showNotification(`New Blog added: ${title}`, 'success')
+      setTitle('')
+      setAuthor('')
+      setUrl('')
+    },
+    onError: (error) => {
+      console.log(error)
+      showNotification(
+        `Failed to add Blog: ${error.response.data.error}`,
+        'danger'
+      )
     },
   })
 
   const handleBlogSubmit = async (event) => {
     event.preventDefault()
     newBlogMutation.mutate({ title, author, url })
-    showNotification(`New Blog added: ${title}`)
-    setTitle('')
-    setAuthor('')
-    setUrl('')
   }
 
   return (
     <form onSubmit={handleBlogSubmit}>
-      <div>
-        title:
-        <input
-          aria-label="Title"
+      <FloatingLabel controlId="floatingTitle" label="Title" className="w-100">
+        <Form.Control
+          type="text"
+          placeholder="Title of the Blog"
           value={title}
           onChange={({ target }) => setTitle(target.value)}
         />
-      </div>
-      <div>
-        author:
-        <input
-          aria-label="Author"
+      </FloatingLabel>
+      <FloatingLabel controlId="floatingAuthor" label="Author">
+        <Form.Control
+          type="text"
+          placeholder="John Bon Jon Bon Jovi"
           value={author}
           onChange={({ target }) => setAuthor(target.value)}
         />
-      </div>
-      <div>
-        url:
-        <input
-          aria-label="Url"
+      </FloatingLabel>
+      <FloatingLabel controlId="floatingUrl" label="URL">
+        <Form.Control
+          type="text"
+          placeholder="bonjovi.com"
           value={url}
           onChange={({ target }) => setUrl(target.value)}
         />
-      </div>
-      <button type="submit">create</button>
+      </FloatingLabel>
+      <Button className="createBlogButton" variant="success" type="submit">
+        Create
+      </Button>
     </form>
   )
 }

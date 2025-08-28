@@ -34,7 +34,6 @@ export const getUser = (id) =>
   axios.get(`/api/users/${id}`).then((res) => res.data)
 
 export const addComment = (blogId, comment) => {
-  console.log('blogId request', blogId)
   return axios
     .post(`/api/blogs/${blogId}/comments`, { comment })
     .then((res) => res.data)

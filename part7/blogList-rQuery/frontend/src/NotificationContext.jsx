@@ -3,7 +3,10 @@ import { createContext, useReducer, useContext } from 'react'
 const notificationReducer = (state, action) => {
   switch (action.type) {
     case 'SET':
-      return action.payload
+      return {
+        message: action.payload.message,
+        type: action.payload.type || 'info',
+      }
     case 'CLEAR':
       return null
     default:
@@ -19,8 +22,8 @@ export const NotificationContextProvider = (props) => {
     null
   )
 
-  const showNotification = (message) => {
-    notificationDispatch({ type: 'SET', payload: message })
+  const showNotification = (message, type = 'info') => {
+    notificationDispatch({ type: 'SET', payload: { message, type } })
     setTimeout(() => {
       notificationDispatch({ type: 'CLEAR' })
     }, 5000)

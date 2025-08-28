@@ -19,7 +19,7 @@ const Login = () => {
       showNotification('Logged in!', 'success')
     } catch (exception) {
       console.log(exception)
-      showNotification('Wrong credentials', 'error')
+      showNotification('Wrong credentials', 'danger')
     }
   }
 
