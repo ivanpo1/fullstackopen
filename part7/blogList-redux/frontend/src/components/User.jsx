@@ -24,7 +24,7 @@ const User = () => {
     <div>
       <h2>{user.name}</h2>
       <h3>added blogs</h3>
-      <Table stickyHeader stickyHeaderOffset={60}>
+      <Table stickyHeader stickyHeaderOffset={60} striped>
         <Table.Thead>
           <Table.Tr>
             <Table.Th ta="center">Title</Table.Th>

@@ -3,7 +3,7 @@ import { showNotification } from '../reducers/notificationReducer.js'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useParams } from 'react-router-dom'
 import CommentForm from './CommentForm.jsx'
-import { Box, Button, Container, Paper } from '@mantine/core'
+import { Box, Button, Center, Container, Paper } from '@mantine/core'
 
 const Blog = () => {
   const dispatch = useDispatch()
@@ -51,12 +51,14 @@ const Blog = () => {
         <CommentForm id={blog.id} />
       </div>
       <div className="commentSection">
-        <h3>Comments</h3>
+        <Center fz="xl" m="xs">
+          Comments
+        </Center>
         <Container size={1200}>
           <div className="commentContainer">
             {blog.comments.map((comment, index) => (
               <Paper
-                bg="gray.1"
+                bg="gray.4"
                 key={comment + index}
                 shadow="sm"
                 radius="xl"

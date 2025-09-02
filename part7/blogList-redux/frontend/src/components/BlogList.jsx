@@ -1,6 +1,6 @@
 import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
-import { Table } from '@mantine/core'
+import { Mark, Table } from '@mantine/core'
 import blogForm from './BlogForm.jsx'
 import { useRef } from 'react'
 import Togglable from './Togglable.jsx'
@@ -29,14 +29,14 @@ const BlogList = () => {
     <div>
       <h2>Blogs</h2>
       {blogForm()}
-      <Table stickyHeader stickyHeaderOffset={60}>
+      <Table stickyHeader stickyHeaderOffset={60} striped>
         <Table.Thead>
           <Table.Tr>
-            <Table.Th bg="blue.3" c="dark.5" ta="center">
-              Title
+            <Table.Th fz="lg" c="dark.1" ta="center">
+              <Mark>Title</Mark>
             </Table.Th>
-            <Table.Th bg="blue.3" c="dark.5" ta="center">
-              Author
+            <Table.Th fz="lg" c="dark.1" ta="center">
+              <Mark color="orange">Author</Mark>
             </Table.Th>
           </Table.Tr>
         </Table.Thead>
