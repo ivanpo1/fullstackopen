@@ -1,51 +1,47 @@
-import Blog from './Blog.jsx'
-import { useDispatch, useSelector } from 'react-redux'
-import { deleteBlog, likeBlog } from '../reducers/blogReducer.js'
-import { showNotification } from '../reducers/notificationReducer.js'
+import { useSelector } from 'react-redux'
+import { Link } from 'react-router-dom'
+import { Table } from '@mantine/core'
+import blogForm from './BlogForm.jsx'
+import { useRef } from 'react'
+import Togglable from './Togglable.jsx'
+import BlogForm from './BlogForm.jsx'
 
 const BlogList = () => {
   const blogs = useSelector((state) => state.blogs)
-  const user = useSelector((state) => state.user)
-  const dispatch = useDispatch()
 
-  const handleLike = async (blog) => {
-    try {
-      dispatch(likeBlog(blog.id))
-      dispatch(showNotification(`You liked ${blog.title}`, 'success', 1000))
-    } catch (error) {
-      dispatch(showNotification(`Error liking Blog: ${error}`, 'error'))
-    }
-  }
+  const blogFormRef = useRef()
+  const blogForm = () => (
+    <Togglable buttonLabel="New Blog" ref={blogFormRef}>
+      <BlogForm togglableRef={blogFormRef} />
+    </Togglable>
+  )
 
-  const handleDelete = async (blog) => {
-    if (
-      window.confirm(
-        `Are you sure you want to delete "${blog.title}" by ${blog.author}?`
-      )
-    ) {
-      try {
-        dispatch(deleteBlog(blog.id))
-        dispatch(showNotification('Blog deleted!', 'success'))
-      } catch (error) {
-        dispatch(showNotification(`Error deleting Blog: ${error}`, 'error'))
-      }
-    }
-  }
+  const rows = blogs.map((blog) => (
+    <Table.Tr key={blog.id}>
+      <Table.Td>
+        <Link to={`/blogs/${blog.id}`}>{blog.title}</Link>
+      </Table.Td>
+      <Table.Td>{blog.author}</Table.Td>
+    </Table.Tr>
+  ))
 
   return (
     <div>
       <h2>Blogs</h2>
-      {blogs
-        .toSorted((a, b) => b.likes - a.likes)
-        .map((blog) => (
-          <Blog
-            key={blog.id}
-            blog={blog}
-            onLike={handleLike}
-            onDelete={handleDelete}
-            currentUser={user}
-          />
-        ))}
+      {blogForm()}
+      <Table stickyHeader stickyHeaderOffset={60}>
+        <Table.Thead>
+          <Table.Tr>
+            <Table.Th bg="blue.3" c="dark.5" ta="center">
+              Title
+            </Table.Th>
+            <Table.Th bg="blue.3" c="dark.5" ta="center">
+              Author
+            </Table.Th>
+          </Table.Tr>
+        </Table.Thead>
+        <Table.Tbody>{rows}</Table.Tbody>
+      </Table>
     </div>
   )
 }

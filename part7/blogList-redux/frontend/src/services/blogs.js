@@ -42,4 +42,10 @@ const update = async (id, blogObject) => {
   return response.data
 }
 
-export default { getAll, setToken, create, update, deletion }
+export const addComment = (blogId, comment) => {
+  return axios
+    .post(`/api/blogs/${blogId}/comments`, { comment })
+    .then((res) => res.data)
+}
+
+export default { getAll, setToken, create, update, deletion, addComment }

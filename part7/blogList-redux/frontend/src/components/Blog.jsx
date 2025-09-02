@@ -1,56 +1,91 @@
-import { useState } from 'react'
-import PropTypes from 'prop-types'
+import { deleteBlog, likeBlog } from '../reducers/blogReducer.js'
+import { showNotification } from '../reducers/notificationReducer.js'
+import { useDispatch, useSelector } from 'react-redux'
+import { Link, useParams } from 'react-router-dom'
+import CommentForm from './CommentForm.jsx'
+import { Box, Button, Container, Paper } from '@mantine/core'
 
-const Blog = ({ blog, onLike, onDelete, currentUser }) => {
-  const [visible, setVisible] = useState(false)
-  // const hideWhenVisible = { display: visible ? 'none' : '' }
-  const showWhenVisible = { display: visible ? '' : 'none' }
+const Blog = () => {
+  const dispatch = useDispatch()
+  const { id } = useParams()
+  const blog = useSelector((state) =>
+    state.blogs.find((blog) => blog.id === id)
+  )
 
-  const toggleVisibility = () => {
-    setVisible(!visible)
+  const handleLike = async (blog) => {
+    try {
+      dispatch(likeBlog(blog.id))
+      dispatch(showNotification(`You liked ${blog.title}`, 'success', 1000))
+    } catch (error) {
+      dispatch(showNotification(`Error liking Blog: ${error}`, 'error'))
+    }
   }
 
-  const blogStyle = {
-    padding: 4,
-    border: 'solid',
-    borderWidth: 1,
-    marginBottom: 5,
-    width: 500,
-  }
+  if (!blog) return <div>Loading blog data...</div>
 
   return (
-    <div style={blogStyle} className="blogContainer">
-      <span data-testid="blog-title">{blog.title}</span> by {blog.author}
-      <button onClick={toggleVisibility}>{visible ? 'hide' : 'view'}</button>
-      <div style={showWhenVisible} className="expandedDetails">
-        <p data-testid="blog-url">url: {blog.url}</p>
-        <p data-testid="blog-likes">
-          likes: <span data-testid="likes-count">{blog.likes}</span>
-          <button onClick={() => onLike(blog)}>like</button>
-        </p>
-        <p>user: {blog.user?.name}</p>
-        {currentUser && blog.user && currentUser.id === blog.user.id && (
-          <button onClick={() => onDelete(blog)}>remove</button>
-        )}
+    <div className="blogContainer">
+      <div className="blogDetails">
+        <Paper bg="dark.6" shadow="xl" radius="lg" p="md" ta="center">
+          <h2>{blog.title}</h2>
+          <p>{blog.url}</p>
+          <p>
+            <span className="numberLikes">{blog.likes}</span> likes
+            <Button
+              ml="md"
+              radius="lg"
+              variant="outline"
+              color="lime"
+              onClick={() => handleLike(blog)}
+            >
+              like
+            </Button>
+          </p>
+          {blog.user && (
+            <p>
+              added by{' '}
+              <Link to={`/users/${blog.user.id}`}>{blog.user?.name}</Link>
+            </p>
+          )}
+        </Paper>
+        <CommentForm id={blog.id} />
+      </div>
+      <div className="commentSection">
+        <h3>Comments</h3>
+        <Container size={1200}>
+          <div className="commentContainer">
+            {blog.comments.map((comment, index) => (
+              <Paper
+                bg="gray.1"
+                key={comment + index}
+                shadow="sm"
+                radius="xl"
+                p="xs"
+                mt="xs"
+                c="dark.5"
+              >
+                <Box ml="md">{comment}</Box>
+              </Paper>
+            ))}
+          </div>
+        </Container>
       </div>
     </div>
   )
 }
 
-Blog.propTypes = {
-  blog: PropTypes.shape({
-    title: PropTypes.string.isRequired,
-    likes: PropTypes.number.isRequired,
-    author: PropTypes.string.isRequired,
-    url: PropTypes.string.isRequired,
-  }).isRequired,
-  onLike: PropTypes.func.isRequired,
-  onDelete: PropTypes.func.isRequired,
-  currentUser: PropTypes.shape({
-    username: PropTypes.string.isRequired,
-    name: PropTypes.string.isRequired,
-    id: PropTypes.string.isRequired,
-  }),
-}
+// Blog.propTypes = {
+//   blog: PropTypes.shape({
+//     title: PropTypes.string.isRequired,
+//     likes: PropTypes.number.isRequired,
+//     author: PropTypes.string.isRequired,
+//     url: PropTypes.string.isRequired,
+//   }).isRequired,
+//   currentUser: PropTypes.shape({
+//     username: PropTypes.string.isRequired,
+//     name: PropTypes.string.isRequired,
+//     id: PropTypes.string.isRequired,
+//   }),
+// }
 
 export default Blog

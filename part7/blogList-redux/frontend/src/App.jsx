@@ -9,10 +9,22 @@ import { initializeBlogs } from './reducers/blogReducer.js'
 import BlogList from './components/BlogList.jsx'
 import Login from './components/Login.jsx'
 import { initializeUser, logoutUser } from './reducers/userReducer.js'
+import UserList from './components/UserList.jsx'
+
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Link,
+  Navigate,
+} from 'react-router-dom'
+import Blog from './components/Blog.jsx'
+import { initializeUsers } from './reducers/usersReducer.js'
+import User from './components/User.jsx'
+import { Button, Group, Text, Container, Paper } from '@mantine/core'
 
 const App = () => {
   const dispatch = useDispatch()
-  const user = useSelector((state) => state.user)
 
   useEffect(() => {
     dispatch(initializeBlogs())
@@ -22,13 +34,12 @@ const App = () => {
     dispatch(initializeUser())
   }, [])
 
-  const blogFormRef = useRef()
+  useEffect(() => {
+    dispatch(initializeUsers())
+  }, [])
 
-  const blogForm = () => (
-    <Togglable buttonLabel="New Blog" ref={blogFormRef}>
-      <BlogForm />
-    </Togglable>
-  )
+  const user = useSelector((state) => state.user)
+  const blogs = useSelector((state) => state.blogs)
 
   if (!user) {
     return (
@@ -41,22 +52,55 @@ const App = () => {
   }
 
   return (
-    <div>
-      <div>
-        <p className="userLogged">{user.name} logged-in</p>
+    <Router>
+      <Container size="lg">
+        <Paper shadow="md" p="md" bg="dark.7" c="white">
+          <Group justify="space-between">
+            <Group>
+              <Link to="/users" className="nav-link">
+                Users
+              </Link>
+              <Link to="/blogs" className="nav-link">
+                Blogs
+              </Link>
+            </Group>
+
+            <Group>
+              <Text fs="italic">
+                <Link to={`/users/${user.id}`} className="nav-link">
+                  {user.name}
+                </Link>{' '}
+                logged-in
+              </Text>
+              <Button
+                variant="filled"
+                color="gray"
+                onClick={() => {
+                  dispatch(logoutUser())
+                  dispatch(showNotification('See you later Aligator'))
+                }}
+              >
+                Logout
+              </Button>
+            </Group>
+          </Group>
+        </Paper>
+
         <Notification />
-        <BlogList />
-        <button
-          onClick={() => {
-            dispatch(logoutUser())
-            dispatch(showNotification('See you later Aligator'))
-          }}
-        >
-          Logout
-        </button>
-        {blogForm()}
-      </div>
-    </div>
+        <Routes>
+          <Route path="/blogs/:id" element={<Blog />} />
+          <Route path="/users/:id" element={<User />} />
+          <Route path="/" element={<BlogList />} />
+          <Route path="/blogs" element={<BlogList />} />
+
+          <Route
+            path="/users"
+            element={user ? <UserList /> : <Navigate replace to="/login" />}
+          />
+          <Route path="/login" element={<Login />} />
+        </Routes>
+      </Container>
+    </Router>
   )
 }
 

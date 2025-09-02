@@ -1,40 +1,135 @@
-/*.notification.success {*/
-/*  color: green;*/
-/*  background: lightgreen;*/
-/*}*/
-/*.notification.error {*/
-/*  color: red;*/
-/*  background: lightgrey;*/
-/*}*/
+.notification.success {
+    color: green;
+    background: lightgreen;
+}
+.notification.error {
+    color: red;
+    background: lightgrey;
+}
 
-/*.notification {*/
-/*  font-size: 20px;*/
-/*  border-style: solid;*/
-/*  border-radius: 5px;*/
-/*  padding: 10px;*/
-/*  margin-bottom: 10px;*/
-/*}*/
+.notification {
+    font-size: 20px;
+    border-style: solid;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 10px;
+}
 
 h2 {
-  background-color: #eed120;
-    border: 2px solid #000000;
-    border-radius: 5px;
-    text-align: center;
+    background-color: #444e7c;
+}
+
+li {
+    color: black
 }
 
 .extra {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
-.userLogged {
-    font-weight: 400;
-    font-size: 20px;
-    color: #444444;
-    margin-left: 5px;
+td, th {
+    text-align: center;
 }
 
-button {
-    margin: 3px;
+body {
+    margin: 16px;
+    background-color: #D7D7D7;
+}
+
+a {
+    padding: 3px;
+}
+
+.commentContainer {
+    overflow-x: hidden;
+    margin-left: 16px;
+}
+
+h2 {
+    margin-bottom: 0;
+    padding: 12px;
+    text-align: center;
+}
+
+.comment {
+    background-color: white;
+    border-radius: 12px;
+    padding: 10px;
+    margin-bottom: 10px;
+    max-width: 800px;
+    overflow-wrap: break-word;
+}
+
+h3 {
+    margin-bottom: 26px;
+}
+
+p {
+    overflow-wrap: break-word;
+}
+
+.commentForm {
+    display: flex;
+    gap: 12px;
+    padding: 12px;
+    justify-content: center;
+}
+
+input[type=text] {
+    border-radius: 5px;
+    background: rgb(249, 250, 250);
+    border: 1px solid rgb(181, 189, 196);
+    font-size: 16px;
+    height: 40px;
+    line-height: 32px;
+    padding: 7px 8px;
+    color: rgb(8, 9, 10);
+    box-shadow: none;
+    width: 600px;
+    :focus{
+        background-color: #fff;
+        border-color: #3b49df;
+        box-shadow: 1px 1px 0 #3b49df;
+    }
+}
+
+.likeButton {
+    margin-left: 12px;
+}
+
+
+/*.blogDetails {*/
+/*    display: flex;*/
+/*    flex-direction: column;*/
+/*}*/
+
+/*.form-floating>.form-control {*/
+/*    width: 100%;*/
+/*}*/
+
+h4 {
+    background: #8e75c9;
+    padding: 6px 6px 6px 32px;
+    margin-bottom: 0;
+}
+
+.numberLikes {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.deleteButton {
+    margin-top: 12px;
+    width: 30%;
+    align-self: center;
+}
+
+.nav-link {
+    color: white
+}
+
+.nav-link:hover {
+    color: red
 }

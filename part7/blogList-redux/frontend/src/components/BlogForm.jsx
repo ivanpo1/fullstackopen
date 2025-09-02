@@ -3,8 +3,9 @@ import PropTypes from 'prop-types'
 import { useDispatch } from 'react-redux'
 import { createBlog } from '../reducers/blogReducer.js'
 import { showNotification } from '../reducers/notificationReducer.js'
+import { Button, Container, Group, Paper, TextInput } from '@mantine/core'
 
-const BlogForm = () => {
+const BlogForm = ({ togglableRef }) => {
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
@@ -28,31 +29,40 @@ const BlogForm = () => {
 
   return (
     <form onSubmit={handleSubmit}>
-      <div>
-        title:
-        <input
+      <Paper shadow="sm" radius="md" withBorder p="xl" mt="md" mb="xs">
+        <TextInput
+          label="Title"
           aria-label="Title"
           value={title}
           onChange={({ target }) => setTitle(target.value)}
         />
-      </div>
-      <div>
-        author:
-        <input
+
+        <TextInput
+          label="Author"
           aria-label="Author"
           value={author}
           onChange={({ target }) => setAuthor(target.value)}
         />
-      </div>
-      <div>
-        url:
-        <input
+
+        <TextInput
+          label="Url"
           aria-label="Url"
           value={url}
           onChange={({ target }) => setUrl(target.value)}
         />
-      </div>
-      <button type="submit">create</button>
+        <Group grow mt="md">
+          <Button type="submit" color="green">
+            Create
+          </Button>
+          <Button
+            type="button"
+            color="yellow"
+            onClick={() => togglableRef.current.toggleVisibility()}
+          >
+            Cancel
+          </Button>
+        </Group>
+      </Paper>
     </form>
   )
 }
