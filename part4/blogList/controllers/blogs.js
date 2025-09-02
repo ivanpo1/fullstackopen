@@ -96,11 +96,8 @@ blogsRouter.get("/:id", async (request, response) => {
 
 blogsRouter.post("/:id/comments", async (request, response, next) => {
   try {
-    console.log("BACKEND");
     const blog = await Blog.findById(request.params.id);
     const body = request.body;
-    console.log("blog", blog);
-    console.log("comment", body.comment);
 
     if (!blog) {
       return response.status(404).json({
@@ -116,8 +113,12 @@ blogsRouter.post("/:id/comments", async (request, response, next) => {
 
     blog.comments = blog.comments.concat(body.comment);
     const updatedBlog = await blog.save();
+    const populatedBlog = await Blog.findById(updatedBlog.id).populate("user", {
+      username: 1,
+      name: 1,
+    });
 
-    response.status(201).json(updatedBlog);
+    response.status(201).json(populatedBlog);
   } catch (error) {
     next(error);
   }
