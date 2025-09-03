@@ -1,8 +1,6 @@
 import { useState } from 'react'
-import PropTypes from 'prop-types'
 import { useDispatch } from 'react-redux'
 import { createBlog } from '../reducers/blogReducer.js'
-import { showNotification } from '../reducers/notificationReducer.js'
 import { Button, Container, Group, Paper, TextInput } from '@mantine/core'
 
 const BlogForm = ({ togglableRef }) => {
@@ -16,15 +14,10 @@ const BlogForm = ({ togglableRef }) => {
     event.preventDefault()
     try {
       const newBlog = await dispatch(createBlog({ title, author, url }))
-      dispatch(
-        showNotification(`New blog: '${newBlog.title}' was added.`, 'success')
-      )
       setTitle('')
       setAuthor('')
       setUrl('')
-    } catch (error) {
-      dispatch(showNotification(`Error creating blog: ${error}`, 'error'))
-    }
+    } catch (error) {}
   }
 
   return (
@@ -66,9 +59,5 @@ const BlogForm = ({ togglableRef }) => {
     </form>
   )
 }
-
-// BlogForm.propTypes = {
-//   createBlog: PropTypes.func.isRequired,
-// }
 
 export default BlogForm

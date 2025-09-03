@@ -16,14 +16,16 @@ const BlogList = () => {
     </Togglable>
   )
 
-  const rows = blogs.map((blog) => (
-    <Table.Tr key={blog.id}>
-      <Table.Td>
-        <Link to={`/blogs/${blog.id}`}>{blog.title}</Link>
-      </Table.Td>
-      <Table.Td>{blog.author}</Table.Td>
-    </Table.Tr>
-  ))
+  const rows = blogs
+    .toSorted((a, b) => b.likes - a.likes)
+    .map((blog) => (
+      <Table.Tr key={blog.id}>
+        <Table.Td>
+          <Link to={`/blogs/${blog.id}`}>{blog.title}</Link>
+        </Table.Td>
+        <Table.Td>{blog.author}</Table.Td>
+      </Table.Tr>
+    ))
 
   return (
     <div>

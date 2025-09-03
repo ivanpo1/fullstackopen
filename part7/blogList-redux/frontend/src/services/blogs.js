@@ -19,7 +19,6 @@ const create = async (blogObject) => {
   }
 
   const response = await axios.post(baseUrl, blogObject, config)
-  console.log('response of create service', response.data)
   return response.data
 }
 
@@ -29,7 +28,6 @@ const deletion = async (id) => {
   }
 
   const response = await axios.delete(`${baseUrl}/${id}`, config)
-  console.log('response delete', response)
   return response.data
 }
 

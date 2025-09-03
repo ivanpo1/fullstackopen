@@ -6,23 +6,10 @@ const Notification = () => {
 
   if (!notification) return null
 
-  // const style = {
-  //   textAlign: 'center',
-  //   border: 'solid',
-  //   padding: 10,
-  //   borderWidth: 1,
-  //   borderRadius: 6,
-  //   margin: 4,
-  //   backgroundColor:
-  //     notification.type === 'success'
-  //       ? 'lightgreen'
-  //       : notification.type === 'error'
-  //         ? 'salmon'
-  //         : 'lightblue',
-  // }
+  const color = notification.type === 'success' ? 'lime' : 'red'
 
   return (
-    <Alert variant="outline" color="lime" title={notification.type}>
+    <Alert variant="outline" color={color} title={notification.type}>
       {notification.message}
     </Alert>
   )

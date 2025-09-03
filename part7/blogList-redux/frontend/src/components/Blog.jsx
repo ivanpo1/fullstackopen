@@ -15,7 +15,6 @@ const Blog = () => {
   const handleLike = async (blog) => {
     try {
       dispatch(likeBlog(blog.id))
-      dispatch(showNotification(`You liked ${blog.title}`, 'success', 1000))
     } catch (error) {
       dispatch(showNotification(`Error liking Blog: ${error}`, 'error'))
     }
@@ -75,19 +74,5 @@ const Blog = () => {
     </div>
   )
 }
-
-// Blog.propTypes = {
-//   blog: PropTypes.shape({
-//     title: PropTypes.string.isRequired,
-//     likes: PropTypes.number.isRequired,
-//     author: PropTypes.string.isRequired,
-//     url: PropTypes.string.isRequired,
-//   }).isRequired,
-//   currentUser: PropTypes.shape({
-//     username: PropTypes.string.isRequired,
-//     name: PropTypes.string.isRequired,
-//     id: PropTypes.string.isRequired,
-//   }),
-// }
 
 export default Blog

@@ -1,7 +1,5 @@
-import { useEffect, useRef } from 'react'
+import { useEffect } from 'react'
 import Notification from './components/Notification'
-import Togglable from './components/Togglable.jsx'
-import BlogForm from './components/BlogForm.jsx'
 
 import { useDispatch, useSelector } from 'react-redux'
 import { showNotification } from './reducers/notificationReducer.js'
@@ -18,6 +16,7 @@ import {
   Link,
   Navigate,
 } from 'react-router-dom'
+
 import Blog from './components/Blog.jsx'
 import { initializeUsers } from './reducers/usersReducer.js'
 import User from './components/User.jsx'
@@ -39,7 +38,6 @@ const App = () => {
   }, [])
 
   const user = useSelector((state) => state.user)
-  const blogs = useSelector((state) => state.blogs)
 
   if (!user) {
     return (
