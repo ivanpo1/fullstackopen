@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { createBlog } from '../reducers/blogReducer.js'
-import { Button, Container, Group, Paper, TextInput } from '@mantine/core'
+import { Button, Group, Paper, TextInput } from '@mantine/core'
 
 const BlogForm = ({ togglableRef }) => {
   const [title, setTitle] = useState('')

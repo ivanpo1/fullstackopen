@@ -97,6 +97,14 @@ const App = () => {
           />
           <Route path="/login" element={<Login />} />
         </Routes>
+
+        <Paper m="md">
+          <Container size="lg">
+            <Text ta="center" size="sm">
+              © {new Date().getFullYear()} Bloglist
+            </Text>
+          </Container>
+        </Paper>
       </Container>
     </Router>
   )
