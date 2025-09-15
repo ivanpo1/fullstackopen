@@ -42,7 +42,7 @@ const App = () => {
   if (!user) {
     return (
       <div>
-        <h2>blogs</h2>
+        <h2>BlogList</h2>
         <Notification />
         <Login />
       </div>
