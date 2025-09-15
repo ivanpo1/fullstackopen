@@ -41,22 +41,31 @@ const App = () => {
           <div>
             <Navbar className="bg-body-tertiary">
               <Container>
-                <Navbar.Brand href="#home">BlogList</Navbar.Brand>
+                <Navbar.Brand>BlogList</Navbar.Brand>
                 <Navbar.Toggle />
-                <Navbar.Collapse className="justify-content-end">
-                  <Nav className="me-auto gap-3">
+                <Navbar.Collapse className="justify-content-between">
+                  <Nav>
                     <Nav.Link as={Link} to="/users">
                       Users
                     </Nav.Link>
                     <Nav.Link as={Link} to="/blogs">
                       Blogs
                     </Nav.Link>
-                    <Nav.Item>
-                      <Navbar.Text className="d-none d-sm-block">
-                        Signed in as:{' '}
-                        <Link to={`/users/${user.id}`}>{user.name}</Link>
-                      </Navbar.Text>
-                    </Nav.Item>
+                  </Nav>
+
+                  <Nav className="align-items-center gap-3">
+                    <Navbar.Text className="d-none d-sm-block m-0">
+                      Signed in as:{' '}
+                      <Link to={`/users/${user.id}`}>{user.name}</Link>
+                    </Navbar.Text>
+                    <Nav.Link
+                      as={Link}
+                      to="#"
+                      onClick={handleLogout}
+                      className="p-0"
+                    >
+                      Logout
+                    </Nav.Link>
                   </Nav>
                 </Navbar.Collapse>
               </Container>
@@ -64,15 +73,7 @@ const App = () => {
             <Notification />
 
             <Routes>
-              <Route
-                path="/blogs"
-                element={
-                  <>
-                    <BlogList user={user} />
-                  </>
-                }
-              />
-
+              <Route path="/blogs" element={<BlogList user={user} />} />
               <Route path="/users" element={<UserList />} />
               <Route path="/users/:id" element={<UserDetails />} />
               <Route path="/blogs/:id" element={<BlogDetails />} />

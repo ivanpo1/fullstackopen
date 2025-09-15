@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useBlogActions } from '../hooks/useBlogActions.js'
 import Button from 'react-bootstrap/Button'
+import Form from 'react-bootstrap/Form'
 
 const CommentForm = (id) => {
   const [comment, setComment] = useState('')
@@ -13,15 +14,18 @@ const CommentForm = (id) => {
   }
 
   return (
-    <form className="commentForm" onSubmit={handleSubmit}>
-      <input
+    <Form className="commentForm" onSubmit={handleSubmit}>
+      <Form.Control
         type="text"
         value={comment}
         onChange={({ target }) => setComment(target.value)}
+        placeholder="Leave a comment..."
         aria-label="comment"
       />
-      <Button type="submit">Add comment</Button>
-    </form>
+      <Button type="submit" variant="success">
+        Add comment
+      </Button>
+    </Form>
   )
 }
 
